@@ -12,7 +12,6 @@
   <meta property="og:image" content="images/photo1.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Fonts + Favicon -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -20,16 +19,12 @@
 
   <style>
     :root{
-      --pink:#ff4d6d;--hot:#ff2d55;--rose:#ff8fab;--gold:#ffd166;--white:#fff;
+      --pink:#ff4d6d;--hot:#ff2d55;--gold:#ffd166;--white:#fff;
       --soft:rgba(255,255,255,.08);--glass:rgba(255,255,255,.14)
     }
     *{box-sizing:border-box}
-    html,body{
-      margin:0;padding:0;font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--white);
-      background:radial-gradient(1200px 800px at 20% 10%,#391a4b 0,#180f26 60%,#0e0a17 100%);
-      min-height:100%;overflow-x:hidden
-    }
-    a{color:inherit}
+    html,body{margin:0;padding:0;font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--white);
+      background:radial-gradient(1200px 800px at 20% 10%,#391a4b 0,#180f26 60%,#0e0a17 100%);min-height:100%;overflow-x:hidden}
     .container{width:min(1000px,92vw);margin:0 auto;padding:24px}
     .card{
       background:linear-gradient(180deg,var(--soft),transparent);
@@ -42,7 +37,6 @@
     h1{font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:0 0 12px;font-size:clamp(28px,3.6vw,48px)}
     h2{font-weight:700;margin:10px 0 6px;font-size:clamp(20px,2.6vw,32px)}
     p.lead{opacity:.9;font-weight:300;margin:0 0 24px}
-
     .btn{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;padding:14px 22px;border-radius:999px;
       background:linear-gradient(135deg,var(--pink),var(--hot));color:#fff;border:0;cursor:pointer;text-decoration:none;
       font-weight:700;letter-spacing:.2px;box-shadow:0 10px 24px rgba(255,77,109,.35);
@@ -51,7 +45,7 @@
     .btn.secondary{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);box-shadow:none;font-weight:600}
     .btn.ghost{background:transparent;border:1px dashed rgba(255,255,255,.25)}
     .small{font-size:12px;opacity:.85}
-    .hidden{display:none !important}
+    .hidden{display:none!important}
 
     /* Floating hearts */
     .hearts{position:absolute;inset:0;overflow:hidden;pointer-events:none}
@@ -63,60 +57,40 @@
       100%{transform:translateY(-120vh) scale(1.4) rotate(20deg);opacity:0}
     }
 
-    /* One screen at a time */
+    /* Sections - one at a time */
     section{display:none}
     section.active{display:block}
 
-    /* Animations */
+    /* Transitions */
     .fade-in{animation:fade .35s ease both}
     @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
     .slide-in{animation:slideIn .45s cubic-bezier(.2,.8,.2,1) both}
     @keyframes slideIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
-    /* Proposal */
-    .proposal{min-height:82vh;display:grid;place-items:center;position:relative}
-    .proposal .askbox{position:relative;width:min(720px,92vw);padding:clamp(20px,4vw,36px)}
-    .question{font-size:clamp(22px,3.2vw,38px);font-weight:800;letter-spacing:-0.015em;margin-bottom:22px;text-shadow:0 8px 28px rgba(255,77,109,.25)}
-    .choices{position:relative;display:inline-flex;flex-wrap:wrap;gap:14px;min-height:52px}
-    .no-btn{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);transition:transform .08s ease;z-index:5}
-
-    /* Gallery */
-    .gallery-grid{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-      gap:14px;margin-top:16px
-    }
-    .photo{position:relative;aspect-ratio:4/5;border-radius:16px;overflow:hidden;
-      background:linear-gradient(135deg,#ff8fab33,#ffd6e083);border:1px solid rgba(255,255,255,.15)}
-    .photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;filter:saturate(1.1) contrast(1.05)}
-    .photo:hover img{transform:scale(1.06)}
-    .badge{position:absolute;left:10px;top:10px;background:rgba(0,0,0,.35);
-      border:1px solid rgba(255,255,255,.25);color:#fff;padding:6px 10px;font-size:12px;border-radius:999px;backdrop-filter:blur(6px)}
-
-    /* Unlock controls */
-    .progress-wrap{display:flex;flex-direction:column;gap:10px;align-items:center;margin-top:18px}
+    /* Unlock screen */
+    .progress-wrap{display:flex;flex-direction:column;gap:10px;align-items:center}
     .bar{height:10px;width:min(520px,82vw);background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.18)}
-    .bar>span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#ff8fab,#ff4d6d);transition:width .3s ease}
+    .bar > span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#ff8fab,#ff4d6d);transition:width .3s ease}
 
-    /* Modal (Shayari) */
+    /* Modal (shayari) */
     .modal{position:fixed;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.55);z-index:50;padding:16px;
       opacity:0;pointer-events:none;transition:opacity .2s ease}
     .modal.show{opacity:1;pointer-events:auto}
     .modal .sheet{width:min(760px,94vw);border-radius:18px;padding:22px;
       background:radial-gradient(200% 140% at 20% 0%,#3a1b52 0,#1d1232 50%,#150d26 100%);
-      border:1px solid rgba(255,255,255,.16);box-shadow:0 30px 60px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.08)}
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:0 30px 60px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.08)}
     .type{min-height:150px;white-space:pre-line;font-size:clamp(18px,2.2vw,22px);line-height:1.6}
     .final{font-size:clamp(22px,2.8vw,34px);text-align:center;margin-top:16px;font-weight:800;color:var(--gold);
       text-shadow:0 8px 30px rgba(255,209,102,.35)}
 
-    /* Header + footer */
+    /* Top ribbon + footer */
     .ribbon{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;border-radius:12px;
       background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.15);
       font-size:14px;margin-bottom:14px}
     .tag{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border-radius:999px;font-weight:600;
       background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16)}
     footer{opacity:.7;font-size:12px;text-align:center;padding:30px 0 40px}
-
-    @media (max-width:520px){.choices{width:100%}.no-btn{position:fixed}}
   </style>
 </head>
 <body>
@@ -133,66 +107,25 @@
     <section id="landing" class="center active">
       <div class="card fade-in">
         <h1>Hey Muskan, there’s a tiny surprise for you…</h1>
-        <p class="lead">Tap below to open your Valentine dashboard filled with love, hearts, and roses 🌹</p>
+        <p class="lead">Tap below to open your Valentine surprise with love, hearts, and roses 🌹</p>
         <button class="btn" id="openBtn">💖 Open Your Valentine</button>
       </div>
     </section>
 
-    <!-- 2) Proposal -->
-    <section id="proposal" class="proposal">
-      <div class="card askbox slide-in" id="askbox">
-        <div class="question">Muskan, will you be my Valentine? 🥰</div>
-        <div class="choices" id="choices">
-          <button class="btn" id="yesBtn">Yes 💞</button>
-          <button class="btn secondary no-btn" id="noBtn" title="You can't catch me 😜">No 😜</button>
-        </div>
-        <!-- Note: Removed the 'P.S. ... escape' line as requested -->
-      </div>
-    </section>
-
-    <!-- 3) Gallery + 10s unlock for Shayari -->
-    <section id="gallery" class="center">
-      <div class="card fade-in">
-        <h2>For my Valentine 💘</h2>
-        <p class="lead">Some of our favorite moments… (add your photos in <code>images/</code> folder)</p>
-
-        <div class="gallery-grid">
-          <figure class="photo">
-            <img src="images/photo1.jpg" alt="Photo 1" onerror="fallback(this,0)"/>
-            <figcaption class="badge">01</figcaption>
-          </figure>
-          <figure class="photo">
-            <img src="images/photo2.jpg" alt="Photo 2" onerror="fallback(this,1)"/>
-            <figcaption class="badge">02</figcaption>
-          </figure>
-          <figure class="photo">
-            <img src="images/photo3.jpg" alt="Photo 3" onerror="fallback(this,2)"/>
-            <figcaption class="badge">03</figcaption>
-          </figure>
-          <figure class="photo">
-            <img src="images/photo4.jpg" alt="Photo 4" onerror="fallback(this,3)"/>
-            <figcaption class="badge">04</figcaption>
-          </figure>
-          <figure class="photo">
-            <img src="images/photo5.jpg" alt="Photo 5" onerror="fallback(this,4)"/>
-            <figcaption class="badge">05</figcaption>
-          </figure>
-          <figure class="photo">
-            <img src="images/photo6.jpg" alt="Photo 6" onerror="fallback(this,5)"/>
-            <figcaption class="badge">06</figcaption>
-          </figure>
-        </div>
-
-        <!-- 10-second unlock controls -->
+    <!-- 2) Unlock (10s) -->
+    <section id="unlock" class="center">
+      <div class="card slide-in">
+        <h2>Unlocking your surprise… ⏳</h2>
+        <p class="lead">Shayari unlocks in <b><span id="timer">10</span>s</b>. Stay with me 💞</p>
         <div class="progress-wrap">
           <div class="bar"><span id="barFill"></span></div>
-          <div class="small">Shayari unlocks in <b><span id="timer">10</span>s</b>…</div>
-          <button id="shayariBtn" class="btn ghost hidden">✨ Read the Romantic Shayari</button>
+          <button id="openShayariBtn" class="btn ghost hidden">✨ Read the Romantic Shayari</button>
+          <div id="readyHint" class="small hidden">Ready! Opening in a moment…</div>
         </div>
       </div>
     </section>
 
-    <!-- 4) Shayari Modal + Final message -->
+    <!-- 3) Shayari Modal + Final message -->
     <div id="modal" class="modal">
       <div class="sheet">
         <h2>🌙 Romantic Shayari for You</h2>
@@ -209,28 +142,25 @@
   </div>
 
   <script>
-    // Sections
+    // Elements
     const landing = document.getElementById('landing');
-    const proposal = document.getElementById('proposal');
-    const gallery  = document.getElementById('gallery');
+    const unlock  = document.getElementById('unlock');
+    const openBtn = document.getElementById('openBtn');
 
-    const openBtn  = document.getElementById('openBtn');
-    const yesBtn   = document.getElementById('yesBtn');
-    const noBtn    = document.getElementById('noBtn');
-    const askbox   = document.getElementById('askbox');
+    const timerEl = document.getElementById('timer');
+    const barFill = document.getElementById('barFill');
+    const openShayariBtn = document.getElementById('openShayariBtn');
+    const readyHint = document.getElementById('readyHint');
 
-    const timerEl   = document.getElementById('timer');
-    const barFill   = document.getElementById('barFill');
-    const shayariBtn= document.getElementById('shayariBtn');
-
-    const modal    = document.getElementById('modal');
-    const typebox  = document.getElementById('typebox');
+    const modal = document.getElementById('modal');
+    const typebox = document.getElementById('typebox');
+    const finishBtn = document.getElementById('finishBtn');
     const closeBtn = document.getElementById('closeBtn');
-    const finishBtn= document.getElementById('finishBtn');
     const finalMsg = document.getElementById('finalMsg');
 
+    // Show only one section
     function show(section){
-      [landing, proposal, gallery].forEach(s => s.classList.remove('active'));
+      [landing, unlock].forEach(s => s.classList.remove('active'));
       section.classList.add('active');
       window.scrollTo({top:0, behavior:'smooth'});
     }
@@ -248,49 +178,31 @@
       span.style.fontSize = size + 'px';
       span.style.animationDuration = dur + 's';
       hearts.appendChild(span);
-      setTimeout(()=> span.remove(), dur*1000);
+      setTimeout(()=>span.remove(), dur*1000);
     }
     setInterval(spawnHeart, 400);
 
-    // Landing -> Proposal
+    // On Open → go to unlock (10s)
     openBtn.addEventListener('click', ()=>{
-      show(proposal);
+      show(unlock);
+      startUnlockTimer(10); // 10 seconds
+      celebrate();
       history.replaceState(null,'','#open-your-valentine');
     });
 
-    // No button runs away
-    function moveNo(){
-      const rect = askbox.getBoundingClientRect();
-      const btnRect = noBtn.getBoundingClientRect();
-      const pad = 10;
-      const maxLeft = Math.max(pad, rect.width - btnRect.width - pad);
-      const maxTop  = Math.max(pad, rect.height - btnRect.height - pad);
-      const newLeft = Math.max(pad, Math.random() * maxLeft);
-      const newTop  = Math.max(pad, Math.random() * maxTop);
-      noBtn.style.left = newLeft + 'px';
-      noBtn.style.top  = newTop + 'px';
-    }
-    noBtn.addEventListener('mouseenter', moveNo);
-    noBtn.addEventListener('click', (e)=>{ e.preventDefault(); moveNo(); });
-
-    // Yes -> Gallery + start 10s unlock
-    let unlockTimerId;
-    yesBtn.addEventListener('click', ()=>{
-      show(gallery);
-      startUnlockTimer(10);
-      celebrate();
-    });
-
     function celebrate(){
-      for (let i=0;i<40;i++){ setTimeout(spawnHeart, i*60); }
+      for(let i=0;i<40;i++){ setTimeout(spawnHeart, i*60); }
     }
 
+    // Unlock timer logic
+    let unlockTimerId;
     function startUnlockTimer(seconds){
       clearInterval(unlockTimerId);
       let t = seconds;
       timerEl.textContent = t;
       barFill.style.width = '0%';
-      shayariBtn.classList.add('hidden');
+      openShayariBtn.classList.add('hidden');
+      readyHint.classList.add('hidden');
 
       const total = t;
       unlockTimerId = setInterval(()=>{
@@ -298,24 +210,27 @@
         timerEl.textContent = t;
         const pct = ((total - t)/total)*100;
         barFill.style.width = Math.min(100, pct) + '%';
-        if (t <= 0){
+
+        if(t <= 0){
           clearInterval(unlockTimerId);
-          shayariBtn.classList.remove('hidden');
-          shayariBtn.classList.add('fade-in');
-          // Auto-open after a moment for app-like feel (still clickable)
+          readyHint.classList.remove('hidden');
+          openShayariBtn.classList.remove('hidden');
+          openShayariBtn.classList.add('fade-in');
+
+          // Auto-open after a moment, but keep button for control
           setTimeout(()=> openShayari(), 1200);
         }
       }, 1000);
     }
 
-    // Shayari modal + typing
     function openShayari(){
       modal.classList.add('show');
       typeShayari();
     }
-    shayariBtn.addEventListener('click', openShayari);
+    openShayariBtn.addEventListener('click', openShayari);
     closeBtn.addEventListener('click', ()=> modal.classList.remove('show'));
 
+    // Shayari typing
     const lines = [
       "तुम्हारी हँसी में मेरा सवेरा है,",
       "तेरी आँखों में मेरा बसेरा है।",
@@ -325,7 +240,7 @@
       "क्या तुम बनोगी मेरी Valentine, मुस्कान-ए-रूह? 💖"
     ];
 
-    let typing=false;
+    let typing = false;
     function typeShayari(){
       if(typing) return;
       typing = true;
@@ -338,7 +253,7 @@
       function typeLine(){
         if(i >= lines.length){
           finishBtn.classList.remove('hidden');
-          typing=false;
+          typing = false;
           return;
         }
         const current = lines[i];
@@ -358,25 +273,6 @@
       finalMsg.classList.remove('hidden');
       celebrate();
     });
-
-    // Image fallback if file missing
-    function fallback(imgEl, idx){
-      const canvas = document.createElement('canvas');
-      canvas.width = 600; canvas.height = 750;
-      const ctx = canvas.getContext('2d');
-      const g = ctx.createLinearGradient(0,0,600,750);
-      g.addColorStop(0, '#ff8fab');
-      g.addColorStop(1, '#ffd6e0');
-      ctx.fillStyle = g; ctx.fillRect(0,0,600,750);
-      ctx.font = '120px serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-      const arr = ['💖','🌹','💞','💘','💕','💝'];
-      ctx.fillText(arr[idx%arr.length], 300, 320);
-      ctx.font = '36px Poppins, sans-serif';
-      ctx.fillStyle = 'rgba(0,0,0,.55)';
-      ctx.fillText('Add your photo here', 300, 460);
-      imgEl.src = canvas.toDataURL('image/png');
-    }
-    window.fallback = fallback;
   </script>
 </body>
 </html>
