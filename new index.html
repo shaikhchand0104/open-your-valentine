@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Open Your Valentine 💝</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ff4d6d" />
+  <meta name="description" content="A lovely app-style Valentine surprise for Muskan 💘" />
+  <meta property="og:title" content="Open Your Valentine 💝">
+  <meta property="og:description" content="A lovely app-style Valentine surprise for Muskan 💘">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="images/photo1.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Fonts & favicon (optional if already present in your repo) -->
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/favicon.png" /> -->
+
+  <style>
+    :root{
+      --pink:#ff4d6d; --hot:#ff2d55; --rose:#ff8fab; --gold:#ffd166; --white:#fff;
+      --soft:rgba(255,255,255,.08); --glass:rgba(255,255,255,.14);
+      --bg0:#0e0a17; --bg1:#180f26; --bg2:#2a183e; --ink:#f7f2f7;
+    }
+    *{box-sizing:border-box}
+    html,body{
+      margin:0; padding:0; color:var(--white);
+      font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      background: radial-gradient(1200px 800px at 20% 10%, #391a4b 0, #180f26 60%, #0e0a17 100%);
+      min-height:100%; overflow:hidden
+    }
+
+    /* App Shell */
+    .app{
+      display:grid;
+      grid-template-rows:64px 1fr;
+      grid-template-columns:84px 1fr;
+      grid-template-areas:
+        "sidebar header"
+        "sidebar main";
+      height:100vh;
+      position:relative;
+    }
+    header{
+      grid-area:header;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 16px; gap:10px;
+      border-bottom:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      backdrop-filter: blur(6px);
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800; letter-spacing:-.3px;
+    }
+    .brand .dot{
+      width:12px; height:12px; border-radius:50%;
+      background:linear-gradient(135deg,var(--pink),var(--hot));
+      box-shadow:0 0 0 4px rgba(255,77,109,.15), 0 6px 18px rgba(255,77,109,.35);
+    }
+    .stepper{
+      display:flex; align-items:center; gap:8px; font-size:12px; opacity:.9;
+    }
+    .stepper .pill{
+      padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.06); font-weight:600;
+    }
+
+    aside{
+      grid-area:sidebar;
+      display:flex; flex-direction:column; align-items:center; gap:10px;
+      border-right:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(180deg, rgba(255,255,255,.03), transparent);
+      padding:10px 8px;
+    }
+    .nav{
+      display:flex; flex-direction:column; gap:8px; margin-top:6px; width:100%;
+    }
+    .nav button{
+      all:unset;
+      display:grid; place-items:center;
+      width:100%; height:56px; border-radius:14px; cursor:pointer;
+      border:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      transition: transform .15s ease, background .15s ease, border-color .15s ease, opacity .15s ease;
+      font-size:22px;
+    }
+    .nav button[aria-current="page"]{
+      border-color: rgba(255,77,109,.55);
+      box-shadow: 0 10px 22px rgba(255,77,109,.25) inset, 0 10px 18px rgba(0,0,0,.25);
+      transform: translateY(-1px);
+    }
+    .nav button[disabled]{
+      opacity:.45; cursor:not-allowed;
+    }
+    .nav .hint{
+      font-size:10px; text-align:center; opacity:.7; padding:0 8px;
+    }
+
+    main{
+      grid-area:main; position:relative; overflow:auto; padding:18px;
+    }
+    .screen{ display:none; height:calc(100% - 0px); }
+    .screen.active{ display:block; }
+
+    /* Cards and UI */
+    .card{
+      background: linear-gradient(180deg, var(--soft), transparent);
+      border:1px solid var(--glass);
+      border-radius:20px;
+      padding: clamp(18px, 4vw, 28px);
+      box-shadow: 0 20px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+      backdrop-filter: blur(10px);
+    }
+    .center{ display:grid; place-items:center; text-align:center; min-height: calc(100vh - 120px); }
+    h1{ font-weight:800; letter-spacing:-.02em; font-size: clamp(28px, 3.2vw, 42px); margin: 0 0 10px; }
+    h2{ font-weight:700; font-size: clamp(20px, 2.6vw, 30px); margin: 0 0 6px; }
+    p.lead{ opacity:.9; font-weight:300; margin:0 0 18px; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
+      padding: 14px 22px; border-radius: 999px; border:0; cursor:pointer;
+      background: linear-gradient(135deg, var(--pink), var(--hot)); color:#fff;
+      font-weight:700; box-shadow:0 10px 24px rgba(255,77,109,.35);
+      transition: transform .15s ease, box-shadow .15s ease, opacity .2s ease;
+    }
+    .btn:hover{ transform: translateY(-2px); box-shadow:0 14px 30px rgba(255,77,109,.45) }
+    .btn.secondary{ background: rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18); box-shadow:none; font-weight:600; }
+    .btn.ghost{ background: transparent; border:1px dashed rgba(255,255,255,.25); }
+
+    .row{ display:grid; gap:14px; grid-template-columns: repeat(12, 1fr); }
+    .col-12{ grid-column: span 12; }
+    .col-6{ grid-column: span 6; }
+    .col-4{ grid-column: span 4; }
+    @media (max-width: 900px){ .col-6{ grid-column: span 12; } .col-4{ grid-column: span 6; } }
+    @media (max-width: 600px){ .col-4{ grid-column: span 12; } }
+
+    /* Gallery */
+    .gallery-grid{
+      display:grid; gap:14px; margin-top:10px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+    .photo{
+      position:relative; aspect-ratio:4/5; overflow:hidden; border-radius:16px;
+      border:1px solid rgba(255,255,255,.15);
+      background:linear-gradient(135deg, #ff8fab33, #ffd6e083);
+    }
+    .photo img{ width:100%; height:100%; object-fit:cover; display:block; transition: transform .5s ease; filter:saturate(1.1) contrast(1.05); }
+    .photo:hover img{ transform: scale(1.06) }
+    .badge{ position:absolute; left:10px; top:10px; background:rgba(0,0,0,.35);
+      border:1px solid rgba(255,255,255,.25); color:#fff; padding:6px 10px; font-size:12px; border-radius:999px; backdrop-filter: blur(6px); }
+
+    /* Progress / Unlock */
+    .progress-wrap{ display:flex; flex-direction:column; gap:10px; align-items:center; margin-top:16px; }
+    .bar{ height:10px; width:min(520px,82vw); background:rgba(255,255,255,.12); border-radius:999px; overflow:hidden; border:1px solid rgba(255,255,255,.18) }
+    .bar > span{ display:block; height:100%; width:0%; background:linear-gradient(90deg, #ff8fab, #ff4d6d); transition: width .3s ease }
+
+    /* Modal (Shayari) */
+    .modal{ position:fixed; inset:0; display:grid; place-items:center; background: rgba(0,0,0,.55); z-index:50; padding:16px;
+      opacity:0; pointer-events:none; transition:opacity .2s ease }
+    .modal.show{ opacity:1; pointer-events:auto }
+    .sheet{ width:min(760px, 94vw); border-radius:18px; padding:22px;
+      background: radial-gradient(200% 140% at 20% 0%, #3a1b52 0, #1d1232 50%, #150d26 100%);
+      border:1px solid rgba(255,255,255,.16); box-shadow: 0 30px 60px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .type{ min-height:150px; white-space:pre-line; font-size: clamp(18px, 2.2vw, 22px); line-height:1.6; }
+    .final{ font-size: clamp(22px, 2.6vw, 34px); text-align:center; margin-top:16px; font-weight:800; color: var(--gold);
+      text-shadow: 0 8px 30px rgba(255, 209, 102, .35) }
+
+    .muted{ opacity:.75; font-size:12px; }
+    .hidden{ display:none !important; }
+
+    /* Background floating hearts */
+    .hearts{ position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+    .hearts span{ position:absolute; color:#ff6b9a; opacity:.85; font-size:14px; animation: floatUp linear forwards;
+      filter: drop-shadow(0 2px 6px rgba(255,77,109,.55)); }
+    @keyframes floatUp { 0%{ transform: translateY(0) scale(.9) rotate(0deg); opacity:.0 } 10%{ opacity:.9 } 100%{ transform: translateY(-120vh) scale(1.4) rotate(20deg); opacity:0 } }
+
+    /* Transitions */
+    .fade-in{ animation: fade .35s ease both }
+    @keyframes fade { from { opacity:0; transform: translateY(8px) } to { opacity:1; transform: none } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Floating background emojis -->
+    <div class="hearts" id="hearts"></div>
+
+    <!-- Sidebar -->
+    <aside>
+      <div class="nav">
+        <button id="navHome"   title="Home"      aria-current="page">🏠</button>
+        <button id="navAsk"    title="Proposal"  disabled>💌</button>
+        <button id="navGallery"title="Gallery"   disabled>🖼️</button>
+        <button id="navShayari"title="Shayari"   disabled>📝</button>
+        <div class="hint">Steps unlock as you go.</div>
+      </div>
+    </aside>
+
+    <!-- Header -->
+    <header>
+      <div class="brand"><span class="dot"></span><span>Open Your Valentine</span></div>
+      <div class="stepper"><span class="pill" id="stepPill">Step 1 of 4 • Home</span></div>
+    </header>
+
+    <!-- Main -->
+    <main>
+      <!-- Screen 1: Home -->
+      <section id="screenHome" class="screen active">
+        <div class="center">
+          <div class="card fade-in">
+            <h1>Hey Muskan, there’s a tiny surprise for you…</h1>
+            <p class="lead">Tap below to open your Valentine dashboard filled with love, hearts, and roses 🌹</p>
+            <button class="btn" id="openBtn">💖 Open Your Valentine</button>
+            <div class="muted" style="margin-top:10px;">Navigation unlocks step-by-step like an app.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: Proposal -->
+      <section id="screenAsk" class="screen">
+        <div class="center">
+          <div class="card fade-in" id="askbox" style="max-width:720px;">
+            <h2>Muskan, will you be my Valentine? 🥰</h2>
+            <div style="display:flex; gap:12px; justify-content:center; position:relative; min-height:52px; margin-top:12px;">
+              <button class="btn" id="yesBtn">Yes 💞</button>
+              <button class="btn secondary" id="noBtn" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);">No 😜</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: Gallery + 10s unlock -->
+      <section id="screenGallery" class="screen">
+        <div class="row">
+          <div class="col-12">
+            <div class="card fade-in">
+              <h2>For my Valentine 💘</h2>
+              <p class="lead">Some of our favorite moments… (replace images in <code>images/</code> folder)</p>
+
+              <div class="gallery-grid">
+                <figure class="photo">
+                  <img src="images/photo1.jpg" alt="Photo 1" onerror="fallback(this,0)"/>
+                  <figcaption class="badge">01</figcaption>
+                </figure>
+                <figure class="photo">
+                  <img src="images/photo2.jpg" alt="Photo 2" onerror="fallback(this,1)"/>
+                  <figcaption class="badge">02</figcaption>
+                </figure>
+                <figure class="photo">
+                  <img src="images/photo3.jpg" alt="Photo 3" onerror="fallback(this,2)"/>
+                  <figcaption class="badge">03</figcaption>
+                </figure>
+                <figure class="photo">
+                  <img src="images/photo4.jpg" alt="Photo 4" onerror="fallback(this,3)"/>
+                  <figcaption class="badge">04</figcaption>
+                </figure>
+                <figure class="photo">
+                  <img src="images/photo5.jpg" alt="Photo 5" onerror="fallback(this,4)"/>
+                  <figcaption class="badge">05</figcaption>
+                </figure>
+                <figure class="photo">
+                  <img src="images/photo6.jpg" alt="Photo 6" onerror="fallback(this,5)"/>
+                  <figcaption class="badge">06</figcaption>
+                </figure>
+              </div>
+
+              <div class="progress-wrap">
+                <div class="bar"><span id="barFill"></span></div>
+                <div class="muted">Shayari unlocks in <b><span id="timer">10</span>s</b>…</div>
+                <button id="openShayariBtn" class="btn ghost hidden">✨ Read the Romantic Shayari</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Shayari (modal) -->
+      <div id="modal" class="modal">
+        <div class="sheet">
+          <h2>🌙 Romantic Shayari for You</h2>
+          <div id="typebox" class="type"></div>
+          <div style="display:flex; gap:10px; margin-top:14px;">
+            <button id="finishBtn" class="btn hidden">Continue 💫</button>
+            <button id="closeBtn" class="btn secondary">Close</button>
+          </div>
+          <div id="finalMsg" class="final hidden">YAH best disscssion ever, I love you too, my love 💛</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    /* ======= App State / Elements ======= */
+    const screens = {
+      home:    document.getElementById('screenHome'),
+      ask:     document.getElementById('screenAsk'),
+      gallery: document.getElementById('screenGallery'),
+    };
+    const nav = {
+      home:    document.getElementById('navHome'),
+      ask:     document.getElementById('navAsk'),
+      gallery: document.getElementById('navGallery'),
+      shayari: document.getElementById('navShayari'),
+    };
+    const stepPill = document.getElementById('stepPill');
+
+    const openBtn = document.getElementById('openBtn');
+    const yesBtn  = document.getElementById('yesBtn');
+    const noBtn   = document.getElementById('noBtn');
+    const askbox  = document.getElementById('askbox');
+
+    const barFill = document.getElementById('barFill');
+    const timerEl = document.getElementById('timer');
+    const openShayariBtn = document.getElementById('openShayariBtn');
+
+    const modal    = document.getElementById('modal');
+    const typebox  = document.getElementById('typebox');
+    const closeBtn = document.getElementById('closeBtn');
+    const finishBtn= document.getElementById('finishBtn');
+    const finalMsg = document.getElementById('finalMsg');
+
+    const hearts = document.getElementById('hearts');
+    const emojis = ["💖","💘","💝","💗","💓","💞","💕","🌹"];
+
+    // Lock steps until completed
+    let reached = { home:true, ask:false, gallery:false, shayari:false };
+    let unlockTimerId;
+
+    function setStep(step, title) {
+      stepPill.textContent = `Step ${step} of 4 • ${title}`;
+    }
+
+    function activateScreen(key){
+      Object.values(screens).forEach(s => s.classList.remove('active'));
+      if (screens[key]) screens[key].classList.add('active');
+
+      // header step indicator
+      if (key === 'home') setStep(1, 'Home');
+      if (key === 'ask') setStep(2, 'Proposal');
+      if (key === 'gallery') setStep(3, 'Gallery');
+
+      // nav current state
+      Object.values(nav).forEach(b => b && b.removeAttribute('aria-current'));
+      if (key === 'home') nav.home.setAttribute('aria-current','page');
+      if (key === 'ask') nav.ask.setAttribute('aria-current','page');
+      if (key === 'gallery') nav.gallery.setAttribute('aria-current','page');
+
+      // lock navigation forward
+      if (nav.ask)     nav.ask.disabled     = !reached.ask;
+      if (nav.gallery) nav.gallery.disabled = !reached.gallery;
+      if (nav.shayari) nav.shayari.disabled = !reached.shayari;
+
+      document.querySelector('main').scrollTo({top:0, behavior:'smooth'});
+    }
+
+    // Sidebar navigation (respects locks)
+    nav.home.addEventListener('click', ()=> activateScreen('home'));
+    nav.ask.addEventListener('click',  ()=> reached.ask     && activateScreen('ask'));
+    nav.gallery.addEventListener('click',()=> reached.gallery && activateScreen('gallery'));
+    nav.shayari.addEventListener('click',()=>{
+      if (!reached.shayari) return;
+      openShayari();
+    });
+
+    /* Floating hearts */
+    function spawnHeart(){
+      const span = document.createElement('span');
+      span.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      span.style.left = Math.random()*100 + 'vw';
+      span.style.bottom = '-40px';
+      const dur = 6 + Math.random()*6;
+      const size = 14 + Math.random()*18;
+      span.style.fontSize = size + 'px';
+      span.style.animationDuration = dur + 's';
+      hearts.appendChild(span);
+      setTimeout(()=> span.remove(), dur*1000);
+    }
+    setInterval(spawnHeart, 400);
+    function celebrate(){ for (let i=0;i<40;i++){ setTimeout(spawnHeart, i*60); } }
+
+    /* Home → Proposal */
+    openBtn.addEventListener('click', ()=>{
+      reached.ask = true;
+      activateScreen('ask');
+      history.replaceState(null,'','#open-your-valentine');
+      celebrate();
+    });
+
+    /* No button runs away */
+    function moveNo(){
+      const rect = askbox.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+      const pad = 10;
+      const maxLeft = Math.max(pad, rect.width - btnRect.width - pad);
+      const maxTop  = Math.max(pad, rect.height - btnRect.height - pad);
+      const newLeft = Math.max(pad, Math.random() * maxLeft);
+      const newTop  = Math.max(pad, Math.random() * maxTop);
+      noBtn.style.left = newLeft + 'px';
+      noBtn.style.top  = newTop + 'px';
+    }
+    noBtn.addEventListener('mouseenter', moveNo);
+    noBtn.addEventListener('click', (e)=>{ e.preventDefault(); moveNo(); });
+
+    /* Yes → Gallery + start 10s unlock */
+    yesBtn.addEventListener('click', ()=>{
+      reached.gallery = true;
+      activateScreen('gallery');
+      startUnlockTimer(10);
+      celebrate();
+    });
+
+    function startUnlockTimer(seconds){
+      clearInterval(unlockTimerId);
+      let t = seconds;
+      timerEl.textContent = t;
+      barFill.style.width = '0%';
+      openShayariBtn.classList.add('hidden');
+
+      const total = t;
+      unlockTimerId = setInterval(()=>{
+        t--;
+        timerEl.textContent = t;
+        const pct = ((total - t)/total)*100;
+        barFill.style.width = Math.min(100, pct) + '%';
+        if (t <= 0){
+          clearInterval(unlockTimerId);
+          reached.shayari = true;
+          if (nav.shayari) nav.shayari.disabled = false;
+          openShayariBtn.classList.remove('hidden');
+          openShayariBtn.classList.add('fade-in');
+          // Auto open after a moment (optional)
+          setTimeout(()=> openShayari(), 1200);
+        }
+      }, 1000);
+    }
+
+    /* Shayari Modal + typing */
+    function openShayari(){
+      modal.classList.add('show');
+      setStep(4, 'Shayari');
+      typeShayari();
+    }
+    openShayariBtn.addEventListener('click', openShayari);
+    closeBtn.addEventListener('click', ()=>{
+      modal.classList.remove('show');
+      activateScreen('gallery'); // return to gallery view behind
+    });
+
+    const lines = [
+      "तुम्हारी हँसी में मेरा सवेरा है,",
+      "तेरी आँखों में मेरा बसेरा है।",
+      "धड़कनों ने जो राज़ कहा चुपके से,",
+      "वो बस इतना कि तुम ही मेरा सहरा हो।",
+      "हर दुआ में बस तुम, हर ख्वाहिश में बस तुम,",
+      "क्या तुम बनोगी मेरी Valentine, मुस्कान-ए-रूह? 💖"
+    ];
+
+    let typing = false;
+    function typeShayari(){
+      if (typing) return;
+      typing = true;
+      typebox.textContent = "";
+      finalMsg.classList.add('hidden');
+      finishBtn.classList.add('hidden');
+
+      let i=0, j=0;
+      const typeSpeed = 40;
+      function typeLine(){
+        if (i >= lines.length){
+          finishBtn.classList.remove('hidden');
+          typing = false;
+          return;
+        }
+        const current = lines[i];
+        if (j <= current.length){
+          typebox.textContent = lines.slice(0,i).join("\n") + (i>0? "\n":"") + current.slice(0,j);
+          j++;
+          setTimeout(typeLine, typeSpeed);
+        } else {
+          i++; j=0;
+          setTimeout(typeLine, 350);
+        }
+      }
+      typeLine();
+    }
+
+    finishBtn.addEventListener('click', ()=>{
+      finalMsg.classList.remove('hidden');
+      celebrate();
+    });
+
+    /* Image fallback if a file is missing */
+    function fallback(imgEl, idx){
+      const canvas = document.createElement('canvas');
+      canvas.width = 600; canvas.height = 750;
+      const ctx = canvas.getContext('2d');
+      const g = ctx.createLinearGradient(0,0,600,750);
+      g.addColorStop(0, '#ff8fab');
+      g.addColorStop(1, '#ffd6e0');
+      ctx.fillStyle = g; ctx.fillRect(0,0,600,750);
+      ctx.font = '120px serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      const arr = ['💖','🌹','💞','💘','💕','💝'];
+      ctx.fillText(arr[idx%arr.length], 300, 320);
+      ctx.font = '36px Poppins, sans-serif';
+      ctx.fillStyle = 'rgba(0,0,0,.55)';
+      ctx.fillText('Add your photo here', 300, 460);
+      imgEl.src = canvas.toDataURL('image/png');
+    }
+    window.fallback = fallback;
+  </script>
+</body>
+</html>
